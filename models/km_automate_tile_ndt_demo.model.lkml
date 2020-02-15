@@ -22,3 +22,5 @@ explore: order_items {
     relationship: many_to_one
   }
 }
+
+include: "/tile_ndts/look_1"

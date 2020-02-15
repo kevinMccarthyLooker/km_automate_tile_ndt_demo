@@ -8,9 +8,15 @@ view: products {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: brand_order {
+    hidden: yes
+    sql: case when ${brand}='Carhartt' then 1 else 0 end ;;
+  }
+
   dimension: brand {
     type: string
     sql: ${TABLE}.brand ;;
+    order_by_field: brand_order
   }
 
   dimension: category {
