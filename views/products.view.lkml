@@ -10,7 +10,7 @@ view: products {
 
   dimension: brand_order {
     hidden: yes
-    sql: case when ${brand}='Carhartt' then 1 else 0 end ;;
+    sql: case when ${id}='1' then 1 else 0 end ;;
   }
 
   dimension: brand {
