@@ -16,7 +16,8 @@ view: products {
   dimension: brand {
     type: string
     sql: ${TABLE}.brand ;;
-    order_by_field: brand_order
+#     order_by_field: brand_order #order by and similar fields can pose problems.
+    html: test {{value}} ;;
   }
 
   dimension: category {

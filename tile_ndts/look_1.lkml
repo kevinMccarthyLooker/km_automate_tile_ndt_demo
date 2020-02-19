@@ -1,4 +1,4 @@
-include: "/views/order_items.view"
+# include: "/views/order_items.view"
 view: tile_1_ndt {
   derived_table: {
     explore_source: order_items {
@@ -17,14 +17,14 @@ view: tile_1_ndt {
 }
 
 view: tile_1_ndt_order_items {
-  extends: [order_items]
+#   extends: [order_items]
   set: ndt_fields {fields:[]}
 }
 
 
-include: "/views/products.view"
+# include: "/views/products.view"
 view: tile_1_ndt_products {
-  extends: [products]
+#   extends: [products]
   dimension: brand {
     sql: ${tile_1_ndt.brand} ;;
   }
@@ -35,9 +35,9 @@ view: tile_1_ndt_products {
   set: ndt_fields {fields:[brand,count]}
 }
 
-include: "/views/users.view"
+# include: "/views/users.view"
 view: tile_1_ndt_users {
-  extends: [users]
+#   extends: [users]
   dimension: gender {
     sql: ${tile_1_ndt.gender} ;;
   }
