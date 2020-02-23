@@ -21,6 +21,11 @@ explore: order_items {
     sql_on: ${inventory_items.product_id} = ${products.id} ;;
     relationship: many_to_one
   }
+
+  join: user_lifetime_summary {
+    sql_on: ${user_lifetime_summary.user_id}=${order_items.user_id} ;;
+    relationship: many_to_one
+  }
 }
 
 include: "/tile_ndts/look_1"
