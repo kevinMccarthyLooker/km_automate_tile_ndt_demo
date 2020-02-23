@@ -252,3 +252,46 @@ join: order_items {from: tile_1_ndt_order_items sql:;; relationship: one_to_one}
         join: inventory_items {from: look_500_ndt_inventory_items sql:;; relationship: one_to_one}
       join: users {from: look_500_ndt_users sql:;; relationship: one_to_one}
   }
+
+          view: look_501_ndt {
+            derived_table: {
+              explore_source: order_items {
+                column: users_zip {field:users.zip}
+                column: inventory_items_cost {field:inventory_items.cost}
+                column: users_state {field:users.state}
+                column: order_items_total_sales {field:order_items.total_sales}
+              }
+            }
+            dimension: users_zip {hidden:yes label:"Zip"}
+            dimension: inventory_items_cost {hidden:yes label:"Cost"}
+            dimension: users_state {hidden:yes label:"State"}
+            measure: order_items_total_sales {hidden:yes type:sum}
+          }
+
+
+          view: look_501_ndt_order_items {
+            measure: total_sales{ type: number label:"Total Sales"
+              sql: ${look_501_ndt.order_items_total_sales};;
+            } }
+
+          view: look_501_ndt_users {
+            dimension: zip {
+              type:zipcode
+              sql: ${look_501_ndt.users_zip};;
+            }
+            dimension: state {
+              type:string
+              sql: ${look_501_ndt.users_state};;
+            }}
+
+          view: look_501_ndt_inventory_items {
+            dimension: cost {
+              type:number
+              sql: ${look_501_ndt.inventory_items_cost};;
+            }}
+
+          explore: look_501_ndt {
+            join: order_items {from: look_501_ndt_order_items sql:;; relationship: one_to_one}
+          join: users {from: look_501_ndt_users sql:;; relationship: one_to_one}
+        join: inventory_items {from: look_501_ndt_inventory_items sql:;; relationship: one_to_one}
+    }
