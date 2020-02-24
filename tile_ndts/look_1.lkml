@@ -219,7 +219,13 @@ join: order_items {from: tile_1_ndt_order_items sql:;; relationship: one_to_one}
               column: users_count {field:users.count}
               column: order_items_count {field:order_items.count}
             }
+
+#           persist_for: "1 hour"
+#           distribution_style: all
           }
+
+
+
           dimension: inventory_items_product_brand {hidden:yes label:"Product Brand"}
           dimension: order_items_status {hidden:yes label:"Status"}
           measure: users_count {hidden:yes type:sum}
@@ -253,6 +259,8 @@ join: order_items {from: tile_1_ndt_order_items sql:;; relationship: one_to_one}
       join: users {from: look_500_ndt_users sql:;; relationship: one_to_one}
   }
 
+
+####
           view: look_501_ndt {
             derived_table: {
               explore_source: order_items {
@@ -261,6 +269,9 @@ join: order_items {from: tile_1_ndt_order_items sql:;; relationship: one_to_one}
                 column: users_state {field:users.state}
                 column: order_items_total_sales {field:order_items.total_sales}
               }
+
+              persist_for: "1 hour"
+              distribution_style: all
             }
             dimension: users_zip {hidden:yes label:"Zip"}
             dimension: inventory_items_cost {hidden:yes label:"Cost"}
@@ -295,3 +306,38 @@ join: order_items {from: tile_1_ndt_order_items sql:;; relationship: one_to_one}
           join: users {from: look_501_ndt_users sql:;; relationship: one_to_one}
         join: inventory_items {from: look_501_ndt_inventory_items sql:;; relationship: one_to_one}
     }
+####
+            view: look_502_ndt {
+              derived_table: {
+                explore_source: order_items {
+                  column: user_lifetime_summary_lifetime_order_count {field:user_lifetime_summary.lifetime_order_count}
+                  column: order_items_average_sale_price {field:order_items.average_sale_price}
+                  column: order_items_count {field:order_items.count}
+                }
+                persist_for: "1 hour"
+                distribution_style: all
+              }
+              dimension: user_lifetime_summary_lifetime_order_count {hidden:yes label:"Lifetime Order Count"}
+              measure: order_items_average_sale_price {hidden:yes type:average}
+              measure: order_items_count {hidden:yes type:sum}
+            }
+
+
+            view: look_502_ndt_user_lifetime_summary {
+              dimension: lifetime_order_count {
+                type:string
+                sql: ${look_502_ndt.user_lifetime_summary_lifetime_order_count};;
+              }}
+
+            view: look_502_ndt_order_items {
+              measure: average_sale_price{ type: number label:"Average Sale Price"
+                sql: ${look_502_ndt.order_items_average_sale_price};;
+              }
+              measure: count{ type: number label:"Count"
+                sql: ${look_502_ndt.order_items_count};;
+              } }
+
+            explore: look_502_ndt {
+              join: user_lifetime_summary {from: look_502_ndt_user_lifetime_summary sql:;; relationship: one_to_one}
+            join: order_items {from: look_502_ndt_order_items sql:;; relationship: one_to_one}
+        }
